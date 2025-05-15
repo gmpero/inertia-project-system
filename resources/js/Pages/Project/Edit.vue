@@ -1,31 +1,29 @@
 <template>
     <AuthenticatedLayout>
-        <div class="w-96 mx-auto pt-8">
-            <div class="mb-8 flex items-center justify-between"> <!-- Добавлены flex и justify-between -->
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Редактирование проекта: {{project.title}}</h2>
+        </template>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div>
-                    <h1>Изменить проект</h1>
-                </div>
-                <div class="ml-auto block"> <!-- или просто удалите ml-auto, т.к. justify-between уже выравнивает -->
-                    <Link :href="route('project.index')" class="hover:bg-white hover:text-sky-500">Назад</Link>
-                </div>
-            </div>
-            <div>
-                <form @submit.prevent="update">
-                    <div class="mb-3">
-                        <input v-model="title" class="w-full rounded-full border-gray-400" type="text"
-                               placeholder="Название">
-                    </div>
-                    <div class="mb-3">
+                    <form @submit.prevent="update">
+                        <div class="mb-3">
+                            <input v-model="title" class="w-full rounded-full border-gray-400" type="text"
+                                   placeholder="Название">
+                        </div>
+                        <div class="mb-3">
                         <textarea v-model="description" class="w-full rounded-full border-gray-400"
                                   placeholder="Описание"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <button
-                            class="ml-auto hover:bg-white hover:text-sky-500 block p-2 w-32 border border-sky-500 bg-sky-500 rounded-full text-center text-white"
-                            type="submit">Сохранить
-                        </button>
-                    </div>
-                </form>
+                        </div>
+                        <div class="mb-3">
+                            <button
+                                class="ml-auto hover:bg-white hover:text-sky-500 block p-2 w-32 border border-sky-500 bg-sky-500 rounded-full text-center text-white"
+                                type="submit">Сохранить
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
