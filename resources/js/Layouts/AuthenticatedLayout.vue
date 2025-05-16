@@ -43,10 +43,13 @@ const showingNavigationDropdown = ref(false);
                                     Задачи
                                 </NavLink>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-20 sm:flex">
-                                <NavLink :href="route('task.create')" :active="route().current('task.create')">
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-20 sm:flex items-center">
+                                <Link
+                                    :href="route('task.create')"
+                                    class="inline-flex items-center justify-center hover:bg-white hover:text-sky-500 py-1.5 w-32 border border-sky-500 bg-sky-500 rounded-full text-white text-sm"
+                                >
                                     Создать задачу
-                                </NavLink>
+                                </Link>
                             </div>
                         </div>
 

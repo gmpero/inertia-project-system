@@ -1,9 +1,9 @@
 <template>
     <AuthenticatedLayout>
-        <div class="py-12">
+        <div class="py-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Список задач -->
-                <div class="space-y-4">
+                <div class="space-y-2">
                     <div v-for="task in tasks"
                          class="card bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                         <Link :href="route('task.show', task.id)" class="block">

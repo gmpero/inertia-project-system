@@ -35,7 +35,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task->load('messages');
+        $task->load('messages.user');
         $task = TaskResource::make($task)->resolve();
         return inertia('Task/Show', compact('task'));
     }

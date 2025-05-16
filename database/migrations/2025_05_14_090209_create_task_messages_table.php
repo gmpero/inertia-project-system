@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('task_messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
-            //$table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('message');
             $table->json('attachments')->nullable();
 
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
-            //$table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

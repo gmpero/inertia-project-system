@@ -4,24 +4,31 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Задача {{ task.task_code }}</h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="mb-2">
-                    <h1>Show</h1>
-                </div>
-                <div class="ml-auto block"> <!-- или просто удалите ml-auto, т.к. justify-between уже выравнивает -->
-                    <Link :href="route('task.index')" class="hover:bg-white hover:text-sky-500">Назад</Link>
-                </div>
-                <div v-if="task">
-                    <div class="mt-8 pt-8 border-t border-gray-300">
-                        <div>id: {{ task.id }}</div>
-                        <div>title: {{ task.title }}</div>
-                        <div v-html="task.description"></div>
-                        <div class="text-sm text-right">created_at: {{ task.date }}</div>
+                <div v-if="task" class="space-y-6">
+                    <!-- Информация о создателе -->
+                    <div class="text-sm text-gray-500">
+                        <span>Создана: {{ task.creator?.name }}</span>
+                        <span class="mx-2">•</span>
+                        <span>{{ task.date }}</span>
+                    </div>
+
+                    <!-- Заголовок задачи -->
+                    <h1 class="text-2xl font-bold text-gray-900">{{ task.title }}</h1>
+
+                    <!-- Описание задачи -->
+                    <div class="prose max-w-none" v-html="task.description"></div>
+
+                    <!-- Дополнительная информация -->
+                    <div class="text-sm text-gray-500">
+                        <div>ID задачи: {{ task.id }}</div>
+                        <div>Код задачи: {{ task.task_code }}</div>
                     </div>
                 </div>
-                <div class="mt-10">
-                    <!-- Компонент списка сообщений -->
+
+                <!-- Сообщения -->
+                <div class="mt-12 space-y-8">
                     <MessageList :messages="task.messages"/>
                     <MessageForm :task-id="task.id" class="mb-8"/>
                 </div>
@@ -38,11 +45,7 @@ import MessageList from '../Task/Partials/MessageList.vue'
 
 export default {
     name: "Index",
-
-    props: [
-        'task'
-    ],
-
+    props: ['task'],
     components: {
         Link,
         MessageForm,
@@ -53,5 +56,5 @@ export default {
 </script>
 
 <style scoped>
-
+/* Дополнительные стили при необходимости */
 </style>
