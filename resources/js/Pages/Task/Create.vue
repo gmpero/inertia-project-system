@@ -24,24 +24,59 @@
                         <!-- Основное содержимое формы -->
                         <div class="p-6">
                             <form @submit.prevent="store" class="space-y-6">
-                                <!-- Выбор проекта -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Проект</label>
-                                    <select
-                                        v-model="form.project_id"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-                                        required
-                                    >
-                                        <option value="" disabled selected>Выберите проект</option>
-                                        <option
-                                            v-for="project in projects"
-                                            :value="project.id"
-                                            :key="project.id"
+                                <div class="flex space-x-4">
+                                    <!-- Выбор проекта -->
+                                    <div class="w-1/2">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Проект</label>
+                                        <select
+                                            v-model="form.project_id"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                            required
                                         >
-                                            {{ project.title }} (ID: {{ project.id }})
-                                        </option>
-                                    </select>
+                                            <option value="" disabled selected>Выберите проект</option>
+                                            <option
+                                                v-for="project in projects"
+                                                :value="project.id"
+                                                :key="project.id"
+                                            >
+                                                {{ project.title }} (ID: {{ project.id }})
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Выбор приоритета -->
+                                    <div class="w-1/2">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Приоритет</label>
+                                        <div class="relative">
+                                            <select
+                                                v-model="form.priority_id"
+                                                class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 appearance-none"
+                                            >
+                                                <option value="" disabled selected>Выберите приоритет</option>
+                                                <option
+                                                    v-for="priority in priorities"
+                                                    :value="priority.id"
+                                                    :key="priority.id"
+                                                >
+                                                    {{ priority.name }}
+                                                </option>
+                                            </select>
+                                            <!-- Цветной индикатор -->
+                                            <div
+                                                v-if="form.priority_id"
+                                                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-sm"
+                                                :style="{ backgroundColor: priorities.find(p => p.id === form.priority_id)?.color || 'transparent' }"
+                                            ></div>
+                                            <!-- Иконка стрелки -->
+                                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
 
                                 <!-- Название задачи -->
                                 <div>
@@ -106,6 +141,7 @@
                                                         file.name
                                                     }}</span>
                                             </div>
+
                                             <button
                                                 type="button"
                                                 @click="removeFile(index)"
@@ -167,6 +203,7 @@ export default {
     },
     props: {
         projects: Array,
+        priorities: Array,
     },
     data() {
         return {
@@ -174,6 +211,7 @@ export default {
             quill: null,
             form: {
                 project_id: '',
+                priority_id: '',
                 title: '',
                 description: '',
                 files: []
@@ -210,6 +248,7 @@ export default {
 
             const formData = new FormData();
             formData.append('project_id', this.form.project_id);
+            formData.append('priority_id', this.form.priority_id);
             formData.append('title', this.form.title);
             formData.append('description', this.form.description);
 

@@ -9,7 +9,21 @@
                         <Link :href="route('task.show', task.id)" class="block">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <h3 class="font-medium text-lg">{{ task?.title }}</h3>
+                                    <div>
+                                        <h3 class="font-medium text-lg">{{ task?.title }}</h3>
+                                        <div class="mt-2 flex items-center">
+                                            <!-- Цветной квадратик -->
+                                            <div
+                                                class="w-4 h-4 rounded mr-2"
+                                                :style="{ backgroundColor: task.priority?.color || '#ccc' }"
+                                            ></div>
+                                            <!-- Название приоритета -->
+                                            <span class="text-sm text-gray-600">{{
+                                                    task.priority?.name || 'Без приоритета'
+                                                }}</span>
+                                        </div>
+                                    </div>
+
                                     <p class="text-gray-600 text-sm">Задача для проекта:
                                         {{ task?.project?.title || 'Не указан' }}</p>
                                     <p class="text-gray-600 text-sm">Номер задачи: {{

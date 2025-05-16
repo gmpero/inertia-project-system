@@ -14,8 +14,16 @@
                         <span>{{ task.date }}</span>
                     </div>
 
-                    <!-- Заголовок задачи -->
-                    <h1 class="text-2xl font-bold text-gray-900">{{ task.title }}</h1>
+                    <!-- Заголовок задачи с приоритетом в одной строке -->
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-2xl font-bold text-gray-900 mr-5">{{ task.title }}</h1> <!-- 20px справа -->
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center">
+                                <div class="w-6 h-6 rounded mr-2" :style="{ backgroundColor: task.priority?.color || '#ccc' }"></div>
+                                <span class="text-sm font-medium">{{ task.priority?.name || 'Без приоритета' }}</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Описание задачи -->
                     <div class="prose max-w-none" v-html="task.description"></div>

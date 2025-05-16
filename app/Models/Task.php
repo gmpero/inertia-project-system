@@ -26,6 +26,11 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function priority()
+    {
+        return $this->belongsTo(TaskPriority::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
