@@ -13,7 +13,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with('project')->get(); // Загружаем задачи с проектами
+        $tasks = Task::with(['project', 'user'])->get(); // Загружаем задачи с проектами
         $tasks = TaskResource::collection($tasks)->resolve();
         return inertia('Task/Index', compact('tasks'));
     }
@@ -28,14 +28,19 @@ class TaskController extends Controller
 
     public function store(StoreRequest $request)
     {
-        Task::create($request->validated());
+        $task = Task::create(
+            array_merge(
+                $request->validated(),
+                ['user_id' => auth()->id()]
+            )
+        );
         return redirect()->route('task.index');
     }
 
 
     public function show(Task $task)
     {
-        $task->load('messages.user');
+        $task->load('user', 'messages.user');
         $task = TaskResource::make($task)->resolve();
         return inertia('Task/Show', compact('task'));
     }

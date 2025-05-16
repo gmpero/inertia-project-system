@@ -16,7 +16,10 @@
                                             task.task_code || 'Не указан'
                                         }}</p>
                                 </div>
-                                <span class="text-gray-400 text-sm">{{ task.date }}</span>
+                                <div>
+                                    <div class="text-gray-400 text-sm">{{ task.date }}</div>
+                                    <div class="text-gray-400 text-sm">Создана: {{ task.user.name }}</div>
+                                </div>
                             </div>
                         </Link>
 
