@@ -16,11 +16,20 @@
 
                     <!-- Заголовок задачи с приоритетом в одной строке -->
                     <div class="flex items-center justify-between">
-                        <h1 class="text-2xl font-bold text-gray-900 mr-5">{{ task.title }}</h1> <!-- 20px справа -->
-                        <div class="flex items-center gap-2">
-                            <div class="flex items-center">
-                                <div class="w-6 h-6 rounded mr-2" :style="{ backgroundColor: task.priority?.color || '#ccc' }"></div>
-                                <span class="text-sm font-medium">{{ task.priority?.name || 'Без приоритета' }}</span>
+                        <h1 class="text-2xl font-bold text-gray-900 mr-5">{{ task.title }}</h1>
+                        <div class="border border-gray-300 rounded-lg p-3">
+                            <div class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1">
+                                <!-- Приоритет -->
+                                <span class="text-gray-500 text-right flex items-center justify-end h-6">Приоритет:</span>
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 rounded mr-2"
+                                         :style="{ backgroundColor: task.priority?.color || '#ccc' }"></div>
+                                    <span class="text-sm font-medium">{{ task.priority?.name || 'Без приоритета' }}</span>
+                                </div>
+
+                                <!-- Исполнитель -->
+                                <span class="text-gray-500 text-right">Исполнитель:</span>
+                                <span class="font-medium">{{ task.contractor?.name ?? 'Не назначен' }}</span>
                             </div>
                         </div>
                     </div>

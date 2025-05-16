@@ -9,12 +9,13 @@ use App\Http\Resources\Task\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskPriority;
+use App\Models\User;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['project', 'creator', 'priority'])->get(); // Загружаем задачи с проектами
+        $tasks = Task::with(['project', 'creator', 'priority', 'contractor'])->get(); // Загружаем задачи с проектами
         $tasks = TaskResource::collection($tasks)->resolve();
         return inertia('Task/Index', compact('tasks'));
     }
@@ -22,10 +23,12 @@ class TaskController extends Controller
     public function create()
     {
         $projects = Project::select('id', 'title')->get();
+        $users = User::select('id', 'name')->get();
         $priorities = TaskPriority::select('id', 'name', 'color')->get();
         return inertia('Task/Create', [
             'projects' => $projects,
             'priorities' => $priorities,
+            'users' => $users,
         ]);
     }
 
@@ -43,7 +46,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task->load('creator', 'messages.user', 'priority');
+        $task->load('creator', 'messages.user', 'priority', 'contractor');
         $task = TaskResource::make($task)->resolve();
         return inertia('Task/Show', compact('task'));
     }
@@ -53,11 +56,13 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $projects = Project::select('id', 'title')->get();
+        $users = User::select('id', 'name')->get();
         $priorities = TaskPriority::select('id', 'name', 'color')->get();
         return inertia('Task/Edit', [
             'task' => $task,
             'projects' => $projects,
             'priorities' => $priorities,
+            'users' => $users,
         ]);
     }
 

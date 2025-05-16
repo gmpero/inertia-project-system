@@ -26,6 +26,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'creator_id');
     }
 
+    public function contractor()
+    {
+        return $this->belongsTo(User::class, 'contractor_id');
+    }
+
     public function priority()
     {
         return $this->belongsTo(TaskPriority::class);

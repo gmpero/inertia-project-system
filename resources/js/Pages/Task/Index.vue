@@ -22,6 +22,9 @@
                                                     task.priority?.name || 'Без приоритета'
                                                 }}</span>
                                         </div>
+                                        <div class="text-sm text-gray-600">
+                                            Исполнитель: {{task.contractor?.name || "Без исполнителя"}}
+                                        </div>
                                     </div>
 
                                     <p class="text-gray-600 text-sm">Задача для проекта:

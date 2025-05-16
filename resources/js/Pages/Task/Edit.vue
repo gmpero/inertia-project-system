@@ -78,6 +78,25 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Выбор исполнителя-->
+                                    <div class="w-1/3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Исполнитель</label>
+                                        <select
+                                            v-model="contractor_id"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                            required
+                                        >
+                                            <option value="" disabled selected>Выберите исполнителя</option>
+                                            <option
+                                                v-for="user in users"
+                                                :value="user.id"
+                                                :key="user.id"
+                                            >
+                                                {{ user.name }} (ID: {{ user.id }})
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <!-- Название задачи -->
                                 <div>
@@ -136,6 +155,7 @@ export default {
         task: Object,
         projects: Array,
         priorities: Array,
+        users: Array,
     },
     data() {
         return {
@@ -144,6 +164,7 @@ export default {
             description: this.task.description, // HTML содержимое
             project_id: this.task.project_id,
             priority_id: this.task.priority_id,
+            contractor_id: this.task.contractor_id,
             quill: null
         }
     },
@@ -187,6 +208,7 @@ export default {
                 description: descriptionHtml,
                 project_id: this.project_id,
                 priority_id: this.priority_id,
+                contractor_id: this.contractor_id,
             });
         }
     }

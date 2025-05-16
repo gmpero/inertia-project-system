@@ -25,7 +25,8 @@ class UpdateRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'project_id' => 'required|integer:projects,id',
-            'priority_id' => 'nullable|integer|exists:task_priorities,id'
+            'priority_id' => 'nullable|integer|exists:task_priorities,id',
+            'contractor_id' => 'nullable|integer'
         ];
     }
 }
