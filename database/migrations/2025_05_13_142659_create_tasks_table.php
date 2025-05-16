@@ -18,14 +18,16 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('priority_id')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('creator_id');
+            $table->unsignedBigInteger('contractor_id')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('priority_id')->references('id')->on('task_priorities')->onDelete('set null');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('contractor_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

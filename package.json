@@ -22,6 +22,7 @@
         "@tiptap/pm": "^2.12.0",
         "@tiptap/starter-kit": "^2.12.0",
         "@tiptap/vue-3": "^2.12.0",
-        "quill": "^2.0.3"
+        "quill": "^2.0.3",
+        "vue-multiselect": "^3.0.0-beta.3"
     }
 }

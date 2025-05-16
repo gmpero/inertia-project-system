@@ -14,7 +14,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['project', 'user', 'priority'])->get(); // Загружаем задачи с проектами
+        $tasks = Task::with(['project', 'creator', 'priority'])->get(); // Загружаем задачи с проектами
         $tasks = TaskResource::collection($tasks)->resolve();
         return inertia('Task/Index', compact('tasks'));
     }
@@ -34,7 +34,7 @@ class TaskController extends Controller
         $task = Task::create(
             array_merge(
                 $request->validated(),
-                ['user_id' => auth()->id()]
+                ['creator_id' => auth()->id()]
             )
         );
         return redirect()->route('task.index');
@@ -43,7 +43,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task->load('user', 'messages.user', 'priority');
+        $task->load('creator', 'messages.user', 'priority');
         $task = TaskResource::make($task)->resolve();
         return inertia('Task/Show', compact('task'));
     }

@@ -6,6 +6,7 @@ use App\Http\Requests\Project\StoreRequest;
 use App\Http\Requests\Project\UpdateRequest;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -19,12 +20,21 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return inertia('Project/Create');
+        $users = User::all();
+        return inertia('Project/Create', [
+            'users' => $users,
+        ]);
     }
 
     public function store(StoreRequest $request)
     {
-        Project::create($request->validated());
+        $project = Project::create($request->validated());
+
+        // Прикрепляем выбранных пользователей к проекту
+        if ($request->has('user_ids')) {
+            $project->users()->attach($request->user_ids);
+        }
+
         return redirect()->route('project.index');
     }
 
@@ -36,12 +46,21 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        return inertia('Project/Edit', compact('project'));
+        $users = User::all();
+
+        // Возвращаем проект и всех пользователей в ответе
+        return inertia('Project/Edit', [
+            'project' => $project,
+            'users' => $users,
+        ]);
     }
 
     public function update(Project $project, UpdateRequest $request)
     {
         $project->update($request->validated());
+        if ($request->has('user_ids')) {
+            $project->users()->attach($request->user_ids);
+        }
         return redirect()->route('project.index');
     }
 

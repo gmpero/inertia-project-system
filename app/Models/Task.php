@@ -21,9 +21,9 @@ class Task extends Model
         return $this->hasMany(TaskMessage::class);
     }
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function priority()

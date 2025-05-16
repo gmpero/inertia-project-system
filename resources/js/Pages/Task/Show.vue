@@ -9,7 +9,7 @@
                 <div v-if="task" class="space-y-6">
                     <!-- Информация о создателе -->
                     <div class="text-sm text-gray-500">
-                        <span>Создана: {{ task.user.name }}</span>
+                        <span>Создана: {{ task.creator.name }}</span>
                         <span class="mx-2">•</span>
                         <span>{{ task.date }}</span>
                     </div>

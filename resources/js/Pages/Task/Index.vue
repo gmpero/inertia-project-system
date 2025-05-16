@@ -32,7 +32,7 @@
                                 </div>
                                 <div>
                                     <div class="text-gray-400 text-sm">{{ task.date }}</div>
-                                    <div class="text-gray-400 text-sm">Создана: {{ task.user.name }}</div>
+                                    <div class="text-gray-400 text-sm">Создана: {{ task.creator.name }}</div>
                                 </div>
                             </div>
                         </Link>
