@@ -85,15 +85,17 @@
                                         <select
                                             v-model="contractor_id"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-                                            required
+                                            :disabled="!project_id"
                                         >
-                                            <option value="" disabled selected>Выберите исполнителя</option>
+                                            <option value="" disabled selected>
+                                                {{ project_id ? 'Выберите исполнителя' : 'Сначала выберите проект' }}
+                                            </option>
                                             <option
-                                                v-for="user in users"
+                                                v-for="user in getProjectUsers(project_id)"
                                                 :value="user.id"
                                                 :key="user.id"
                                             >
-                                                {{ user.name }} (ID: {{ user.id }})
+                                                {{ user.name }}
                                             </option>
                                         </select>
                                     </div>
@@ -210,6 +212,12 @@ export default {
                 priority_id: this.priority_id,
                 contractor_id: this.contractor_id,
             });
+        },
+
+        getProjectUsers(projectId) {
+            if (!projectId) return [];
+            const project = this.projects.find(p => p.id === projectId);
+            return project?.users || [];
         }
     }
 }

@@ -15,20 +15,18 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['project', 'creator', 'priority', 'contractor'])->get(); // Загружаем задачи с проектами
+        $tasks = Task::with(['project', 'creator', 'priority', 'contractor'])->get();
         $tasks = TaskResource::collection($tasks)->resolve();
         return inertia('Task/Index', compact('tasks'));
     }
 
     public function create()
     {
-        $projects = Project::select('id', 'title')->get();
-        $users = User::select('id', 'name')->get();
+        $projects = Project::with('users:id,name')->select('id', 'title')->get();
         $priorities = TaskPriority::select('id', 'name', 'color')->get();
         return inertia('Task/Create', [
             'projects' => $projects,
             'priorities' => $priorities,
-            'users' => $users,
         ]);
     }
 
@@ -55,14 +53,12 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $projects = Project::select('id', 'title')->get();
-        $users = User::select('id', 'name')->get();
+        $projects = Project::with('users:id,name')->select('id', 'title')->get();
         $priorities = TaskPriority::select('id', 'name', 'color')->get();
         return inertia('Task/Edit', [
             'task' => $task,
             'projects' => $projects,
             'priorities' => $priorities,
-            'users' => $users,
         ]);
     }
 

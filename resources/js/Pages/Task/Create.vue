@@ -79,21 +79,23 @@
                                         </div>
                                     </div>
 
-                                    <!-- Выбор исполнителя-->
+                                    <!-- Выбор исполнителя -->
                                     <div class="w-1/3">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Исполнитель</label>
                                         <select
                                             v-model="form.contractor_id"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-                                            required
+                                            :disabled="!form.project_id"
                                         >
-                                            <option value="" disabled selected>Выберите исполнителя</option>
+                                            <option value="" disabled selected>
+                                                {{ form.project_id ? 'Выберите исполнителя' : 'Сначала выберите проект' }}
+                                            </option>
                                             <option
-                                                v-for="user in users"
+                                                v-for="user in getProjectUsers(form.project_id)"
                                                 :value="user.id"
                                                 :key="user.id"
                                             >
-                                                {{ user.name }} (ID: {{ user.id }})
+                                                {{ user.name }}
                                             </option>
                                         </select>
                                     </div>
@@ -306,6 +308,12 @@ export default {
         },
         filePreview(file) {
             return URL.createObjectURL(file);
+        },
+
+        getProjectUsers(projectId) {
+            if (!projectId) return [];
+            const project = this.projects.find(p => p.id === projectId);
+            return project?.users || [];
         }
     }
 }
