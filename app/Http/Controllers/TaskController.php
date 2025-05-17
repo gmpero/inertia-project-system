@@ -9,6 +9,7 @@ use App\Jobs\SendTaskNotification;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskPriority;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -81,7 +82,25 @@ class TaskController extends Controller
 
     public function update(Task $task, UpdateRequest $request)
     {
+        // Основное обновление данных
         $task->update($request->validated());
+
+        // Обработка удаления файлов
+        if ($request->has('files_to_delete')) {
+            // Удаляем файлы из хранилища
+            foreach ($request->input('files_to_delete') as $filePath) {
+                Storage::disk('public')->delete($filePath);
+            }
+
+            // Удаляем файлы из записи в БД
+            $task->removeFiles($request->input('files_to_delete'));
+        }
+
+        // Обработка добавления новых файлов
+        if ($request->hasFile('files')) {
+            $task->storeFiles($request->file('files'));
+        }
+
         return redirect()->route('task.index');
     }
 

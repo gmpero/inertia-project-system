@@ -33,6 +33,20 @@ class Task extends Model
         $this->save();
     }
 
+    public function removeFiles(array $filesToDelete)
+    {
+        if (empty($this->files)) {
+            return;
+        }
+
+        // Фильтруем файлы, оставляя только те, которые не нужно удалять
+        $this->files = array_filter($this->files, function($file) use ($filesToDelete) {
+            return !in_array($file['path'], $filesToDelete);
+        });
+
+        $this->save();
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

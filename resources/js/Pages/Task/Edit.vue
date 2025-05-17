@@ -114,6 +114,74 @@
                                     <input type="hidden" name="description" v-model="description">
                                 </div>
 
+                                <!-- После блока с Quill Editor добавьте: -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Файлы задачи</label>
+
+                                    <!-- Текущие файлы -->
+                                    <div v-if="existingFiles.length" class="mb-4 space-y-2">
+                                        <div v-for="(file, index) in existingFiles" :key="'existing-'+index"
+                                             class="flex items-center justify-between p-2 border border-gray-200 rounded-md">
+                                            <div class="flex items-center truncate">
+                                                <template v-if="file.mime.startsWith('image/')">
+                                                    <img :src="file.url" class="h-8 w-8 object-cover rounded mr-2" alt="Preview">
+                                                </template>
+                                                <template v-else>
+                                                    <div class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                        </svg>
+                                                    </div>
+                                                </template>
+                                                <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
+                                                <span class="text-xs text-gray-500 ml-2">{{ formatFileSize(file.size) }}</span>
+                                            </div>
+                                            <button type="button" @click="removeExistingFile(index)" class="text-red-500 hover:text-red-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Добавление новых файлов -->
+                                    <div class="mt-2">
+                                        <label class="cursor-pointer inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Добавить файлы
+                                            <input type="file" class="sr-only" multiple @change="handleFileUpload">
+                                        </label>
+                                    </div>
+
+                                    <!-- Новые файлы (предпросмотр) -->
+                                    <div v-if="newFiles.length" class="mt-4 space-y-2">
+                                        <div v-for="(file, index) in newFiles" :key="'new-'+index"
+                                             class="flex items-center justify-between p-2 border border-gray-200 rounded-md">
+                                            <div class="flex items-center truncate">
+                                                <template v-if="isImage(file)">
+                                                    <img :src="filePreview(file)" class="h-8 w-8 object-cover rounded mr-2" alt="Preview">
+                                                </template>
+                                                <template v-else>
+                                                    <div class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                        </svg>
+                                                    </div>
+                                                </template>
+                                                <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
+                                                <span class="text-xs text-gray-500 ml-2">{{ formatFileSize(file.size) }}</span>
+                                            </div>
+                                            <button type="button" @click="removeNewFile(index)" class="text-red-500 hover:text-red-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Кнопка отправки -->
                                 <div class="pt-2">
                                     <button
@@ -139,80 +207,231 @@
 </template>
 
 <script>
-import {Link} from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 export default {
-    name: "Index",
+    name: "Edit",
     components: {
         Link,
         AuthenticatedLayout
     },
     props: {
-        task: Object,
+        task: {
+            type: Object,
+            required: true,
+            default: () => ({
+                files: []
+            })
+        },
         projects: Array,
         priorities: Array,
         users: Array,
     },
     data() {
+        // Получаем базовый URL из window.location
+        const baseUrl = window.location.origin;
+
+        // Функция для подготовки списка файлов
+        const prepareFiles = (files) => {
+            if (!files || !Array.isArray(files)) return [];
+            return files.map(file => ({
+                ...file,
+                // Формируем полный URL к файлу
+                url: file.path ? `${baseUrl}/storage/${file.path.replace(/^storage\//, '')}` : null,
+                // Добавляем mime-type если его нет
+                mime: file.mime || this.getMimeTypeFromName(file.name)
+            }));
+        };
+
         return {
             id: this.task.id,
             title: this.task.title,
-            description: this.task.description, // HTML содержимое
+            description: this.task.description,
             project_id: this.task.project_id,
             priority_id: this.task.priority_id,
             contractor_id: this.task.contractor_id,
-            quill: null
-        }
+            quill: null,
+
+            existingFiles: prepareFiles(this.task.files),
+            newFiles: [],
+            filesToDelete: []
+        };
     },
     mounted() {
         // Инициализация Quill Editor
-        this.quill = new Quill(this.$refs.editorContainer, {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline'],
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    ['link'],
-                    ['clean']
-                ]
-            }
-        });
-
-        // Установка начального значения из пропса
-        if (this.task.description) {
-            this.quill.root.innerHTML = this.task.description;
-        }
-
-        // Обновляем description при изменении содержимого
-        this.quill.on('text-change', () => {
-            this.description = this.$refs.editorContainer.querySelector('.ql-editor').innerHTML;
-        });
+        this.initQuillEditor();
     },
     beforeUnmount() {
-        if (this.quill) {
-            this.quill.off('text-change');
-            this.quill = null;
-        }
+        this.destroyQuillEditor();
     },
     methods: {
-        update() {
-            // Получаем текущее HTML содержимое редактора
-            const descriptionHtml = this.$refs.editorContainer.querySelector('.ql-editor').innerHTML;
+        // Инициализация редактора
+        initQuillEditor() {
+            this.quill = new Quill(this.$refs.editorContainer, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        ['link'],
+                        ['clean']
+                    ]
+                }
+            });
 
-            this.$inertia.patch(`/tasks/${this.id}`, {
-                title: this.title,
-                description: descriptionHtml,
-                project_id: this.project_id,
-                priority_id: this.priority_id,
-                contractor_id: this.contractor_id,
+            // Установка начального значения
+            if (this.task.description) {
+                this.quill.root.innerHTML = this.task.description;
+            }
+
+            // Обработчик изменений
+            this.quill.on('text-change', () => {
+                this.description = this.$refs.editorContainer.querySelector('.ql-editor').innerHTML;
             });
         },
 
+        // Уничтожение редактора
+        destroyQuillEditor() {
+            if (this.quill) {
+                this.quill.off('text-change');
+                this.quill = null;
+            }
+        },
+
+        // Обновление задачи
+        async update() {
+            try {
+                const formData = new FormData();
+
+                // Основные данные
+                formData.append('_method', 'PATCH');
+                formData.append('title', this.title);
+                formData.append('description', this.description);
+                formData.append('project_id', this.project_id);
+                formData.append('priority_id', this.priority_id);
+                formData.append('contractor_id', this.contractor_id);
+
+                // Файлы для удаления
+                this.filesToDelete.forEach((fileId, index) => {
+                    formData.append(`files_to_delete[${index}]`, fileId);
+                });
+
+                // Новые файлы
+                this.newFiles.forEach((file, index) => {
+                    formData.append(`files[${index}]`, file);
+                });
+
+                // Отправка данных
+                await this.$inertia.post(`/tasks/${this.id}`, formData, {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        this.newFiles = [];
+                        this.filesToDelete = [];
+                        // Обновляем existingFiles после успешного сохранения
+                        this.existingFiles = this.task.files.map(file => ({
+                            ...file,
+                            url: this.asset(`storage/${file.path}`)
+                        }));
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка при обновлении задачи:', error);
+            }
+        },
+
+        // Получение пользователей проекта
         getProjectUsers(projectId) {
             if (!projectId) return [];
             const project = this.projects.find(p => p.id === projectId);
             return project?.users || [];
+        },
+
+        // Обработка загрузки файлов
+        handleFileUpload(event) {
+            const files = event.target.files;
+            if (!files) return;
+
+            for (let i = 0; i < files.length; i++) {
+                this.newFiles.push(files[i]);
+            }
+            event.target.value = '';
+        },
+
+        // Удаление существующего файла
+        removeExistingFile(index) {
+            const file = this.existingFiles[index];
+            this.filesToDelete.push(file.id || file.path);
+            this.existingFiles.splice(index, 1);
+        },
+
+        // Удаление нового файла
+        removeNewFile(index) {
+            this.newFiles.splice(index, 1);
+        },
+
+        // Проверка, является ли файл изображением
+        isImage(file) {
+            return file.type?.startsWith('image/') ||
+                file.mime?.startsWith('image/') ||
+                this.getMimeTypeFromName(file.name).startsWith('image/');
+        },
+
+        // Превью файла
+        filePreview(file) {
+            if (this.isImage(file)) {
+                return file.type ? URL.createObjectURL(file) : file.url;
+            }
+            return null;
+        },
+
+        // Форматирование размера файла
+        formatFileSize(bytes) {
+            if (!bytes) return '0 B';
+            if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + ' GB';
+            if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+            if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return bytes + ' B';
+        },
+
+        // Получение mime-type по имени файла
+        getMimeTypeFromName(filename) {
+            if (!filename) return 'application/octet-stream';
+
+            const extension = filename.split('.').pop().toLowerCase();
+            const mimeTypes = {
+                // Images
+                jpg: 'image/jpeg',
+                jpeg: 'image/jpeg',
+                png: 'image/png',
+                gif: 'image/gif',
+                webp: 'image/webp',
+                svg: 'image/svg+xml',
+                // Documents
+                pdf: 'application/pdf',
+                doc: 'application/msword',
+                docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                xls: 'application/vnd.ms-excel',
+                xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                ppt: 'application/vnd.ms-powerpoint',
+                pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                txt: 'text/plain',
+                // Archives
+                zip: 'application/zip',
+                rar: 'application/x-rar-compressed',
+                // Other
+                mp3: 'audio/mpeg',
+                mp4: 'video/mp4',
+                mov: 'video/quicktime'
+            };
+
+            return mimeTypes[extension] || 'application/octet-stream';
+        },
+
+        // Формирование полного URL
+        asset(path) {
+            const baseUrl = window.location.origin;
+            return path.startsWith('http') ? path : `${baseUrl}/${path.replace(/^\//, '')}`;
         }
     }
 }
