@@ -28,6 +28,12 @@ class TaskResource extends JsonResource
             'contractor' => $this->whenLoaded('contractor'),
             'priority' => $this->whenLoaded('priority'),
             'messages' => $this->whenLoaded('messages'),
+            'files' => $this->when($this->files, function() {
+                return array_map(function($file) {
+                    $file['url'] = asset('storage/'.$file['path']);
+                    return $file;
+                }, $this->files);
+            }),
 //            'date' => $this->created_at->diffForHumans(),
         ];
     }

@@ -11,6 +11,28 @@ class Task extends Model
     protected $table = 'tasks';
     use HasFactory;
 
+    protected $casts = [
+        'files' => 'array',
+    ];
+
+    public function storeFiles($files)
+    {
+        $storedFiles = [];
+
+        foreach ($files as $file) {
+            $path = $file->store('tasks/' . $this->id, 'public');
+            $storedFiles[] = [
+                'path' => $path,
+                'name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'mime' => $file->getMimeType()
+            ];
+        }
+
+        $this->files = array_merge($this->files ?? [], $storedFiles);
+        $this->save();
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

@@ -37,6 +37,40 @@
                     <!-- Описание задачи -->
                     <div class="prose max-w-none" v-html="task.description"></div>
 
+                    <!-- Прикрепленные файлы -->
+                    <div v-if="task.files && task.files.length" class="mt-6">
+                        <h3 class="text-md font-medium text-gray-900 mb-2">Прикрепленные файлы</h3>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+                            <div v-for="(file, index) in task.files" :key="index"
+                                 class="border border-gray-400 rounded hover:shadow-sm transition-shadow text-center">
+                                <!-- Превью файла -->
+                                <a :href="file.url" target="_blank" class="block">
+                                    <!-- Для изображений -->
+                                    <div v-if="file.mime.startsWith('image/')"
+                                         class="h-14 bg-gray-100 flex items-center justify-center overflow-hidden">
+                                        <img :src="file.url" :alt="file.name"
+                                             class="max-h-full max-w-full object-cover">
+                                    </div>
+
+                                    <!-- Для других файлов -->
+                                    <div v-else class="h-14 bg-gray-50 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                    </div>
+                                </a>
+
+                                <!-- Название и размер файла -->
+                                <div class="p-1 border-t border-gray-100 bg-white text-xs">
+                                    <div class="truncate px-1" :title="file.name">{{ file.name }}</div>
+                                    <div class="text-gray-500 text-xxs mt-1">{{ formatFileSize(file.size) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Дополнительная информация -->
                     <div class="text-sm text-gray-500">
                         <div>ID задачи: {{ task.id }}</div>
@@ -68,8 +102,17 @@ export default {
         MessageForm,
         MessageList,
         AuthenticatedLayout,
+    },
+    methods: {
+        formatFileSize(bytes) {
+            if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + ' GB';
+            if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+            if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return bytes + ' B';
+        }
     }
 }
+
 </script>
 
 <style scoped>

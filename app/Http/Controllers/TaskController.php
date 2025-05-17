@@ -46,6 +46,10 @@ class TaskController extends Controller
             )
         );
 
+        if ($request->hasFile('files')) {
+            $task->storeFiles($request->file('files'));
+        }
+
         // Добавляем задачу в очередь вместо прямой отправки
         SendTaskNotification::dispatch($task);
 
@@ -57,6 +61,7 @@ class TaskController extends Controller
     {
         $task->load('creator', 'messages.user', 'priority', 'contractor');
         $task = TaskResource::make($task)->resolve();
+
         return inertia('Task/Show', compact('task'));
     }
 
