@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Requests\Message\UpdateRequest;
+use App\Mail\MessageNotificationMail;
 use App\Models\TaskMessage;
 use http\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class MessageController extends Controller
@@ -21,6 +23,16 @@ class MessageController extends Controller
 
         // Создаем сообщение
         $message = TaskMessage::create($validated);
+
+        // Получаем всех участников проекта, связанного с задачей
+        $recipients = $message->task->project->users()
+            ->where('users.id', '!=', $message->user_id) // Исключаем отправителя
+            ->get();
+
+        // Отправка каждому получателю
+        foreach ($recipients as $recipient) {
+            Mail::to($recipient->email)->queue(new MessageNotificationMail($message));
+        }
 
         return redirect()->route('task.show', $validated['task_id']);
     }

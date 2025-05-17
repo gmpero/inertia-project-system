@@ -6,10 +6,12 @@ use App\Http\Requests\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\Task\MessageResource;
 use App\Http\Resources\Task\TaskResource;
+use App\Mail\TaskCreatedMail;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskPriority;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class TaskController extends Controller
 {
@@ -46,6 +48,10 @@ class TaskController extends Controller
                 ['creator_id' => auth()->id()]
             )
         );
+
+        // Отправка письма исполнителю
+        Mail::to($task->contractor->email)->send(new TaskCreatedMail($task));
+
         return redirect()->route('task.index');
     }
 
