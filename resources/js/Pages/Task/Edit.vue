@@ -26,26 +26,21 @@
                             <form @submit.prevent="update" class="space-y-6">
                                 <div class="flex space-x-4">
                                     <!-- Выбор проекта -->
-                                    <div class="w-1/2">
+                                    <div class="w-1/3">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Проект</label>
                                         <select
                                             v-model="project_id"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed"
                                             required
                                         >
-                                            <option value="" disabled selected>Выберите проект</option>
-                                            <option
-                                                v-for="project in projects"
-                                                :value="project.id"
-                                                :key="project.id"
-                                            >
-                                                {{ project.title }} (ID: {{ project.id }})
+                                            <option :value="project_id" selected>
+                                                {{ projects.find(p => p.id === project_id)?.title || 'Неизвестный проект' }}
                                             </option>
                                         </select>
                                     </div>
 
                                     <!-- Выбор приоритета -->
-                                    <div class="w-1/2">
+                                    <div class="w-1/3">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Приоритет</label>
                                         <div class="relative">
                                             <select
