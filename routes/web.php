@@ -74,6 +74,17 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{message}', [\App\Http\Controllers\MessageController::class, 'update'])->name('message.update');
         Route::delete('/{message}', [\App\Http\Controllers\MessageController::class, 'delete'])->name('message.delete');
     });
+
+    Route::group(['namespace' => 'Calendar', 'prefix' => 'calendar'], function () {
+        Route::get('/', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
+    });
+});
+
+Route::fallback(function() {
+    if (request()->is('registr*')) {
+        return redirect()->route('register');
+    }
+    abort(404, 'Страница не найдена');
 });
 
 require __DIR__ . '/auth.php';

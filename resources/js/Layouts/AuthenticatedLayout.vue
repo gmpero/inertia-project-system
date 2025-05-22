@@ -43,6 +43,11 @@ const showingNavigationDropdown = ref(false);
                                     Задачи
                                 </NavLink>
                             </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-5 sm:flex">
+                                <NavLink :href="route('calendar.index')" :active="route().current('calendar.index')">
+                                    Календарь
+                                </NavLink>
+                            </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-20 sm:flex items-center">
                                 <Link
                                     :href="route('task.create')"

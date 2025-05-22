@@ -1,15 +1,15 @@
 <template>
     <AuthenticatedLayout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex-1 p-8">
-                    <div class="mx-auto bg-white overflow-hidden">
+        <div class="py-6 sm:py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="p-4 sm:p-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <!-- Шапка формы -->
-                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                            <h1 class="text-2xl font-bold text-gray-800">Создание новой задачи</h1>
+                        <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Создание новой задачи</h1>
                             <Link
                                 :href="route('task.index')"
-                                class="text-sky-500 hover:text-sky-600 transition-colors flex items-center"
+                                class="text-sky-500 hover:text-sky-600 transition-colors flex items-center text-sm sm:text-base"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
                                      fill="currentColor">
@@ -22,15 +22,16 @@
                         </div>
 
                         <!-- Основное содержимое формы -->
-                        <div class="p-6">
-                            <form @submit.prevent="store" class="space-y-6">
-                                <div class="flex space-x-4">
+                        <div class="p-4 sm:p-6">
+                            <form @submit.prevent="store" class="space-y-4 sm:space-y-6">
+                                <!-- Группа полей - теперь в колонку на мобильных -->
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <!-- Выбор проекта -->
-                                    <div class="w-1/3">
+                                    <div class="sm:col-span-1">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Проект</label>
                                         <select
                                             v-model="form.project_id"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"
                                             required
                                         >
                                             <option value="" disabled selected>Выберите проект</option>
@@ -45,12 +46,12 @@
                                     </div>
 
                                     <!-- Выбор приоритета -->
-                                    <div class="w-1/3">
+                                    <div class="sm:col-span-1">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Приоритет</label>
                                         <div class="relative">
                                             <select
                                                 v-model="form.priority_id"
-                                                class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 appearance-none"
+                                                class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 appearance-none text-sm sm:text-base"
                                             >
                                                 <option value="" disabled selected>Выберите приоритет</option>
                                                 <option
@@ -80,11 +81,11 @@
                                     </div>
 
                                     <!-- Выбор исполнителя -->
-                                    <div class="w-1/3">
+                                    <div class="sm:col-span-1">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Исполнитель</label>
                                         <select
                                             v-model="form.contractor_id"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"
                                             :disabled="!form.project_id"
                                         >
                                             <option value="" disabled selected>
@@ -101,6 +102,46 @@
                                     </div>
                                 </div>
 
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <!-- Выбор Статуса -->
+                                    <!-- <div class="sm:col-span-1">-->
+                                    <!--                                        <label class="block text-sm font-medium text-gray-700 mb-1">Статус</label>-->
+                                    <!--                                        <select-->
+                                    <!--                                            v-model="form.project_id"-->
+                                    <!--                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"-->
+                                    <!--                                            required-->
+                                    <!--                                        >-->
+                                    <!--                                            <option value="" disabled selected>Выберите проект</option>-->
+                                    <!--                                            <option-->
+                                    <!--                                                v-for="project in projects"-->
+                                    <!--                                                :value="project.id"-->
+                                    <!--                                                :key="project.id"-->
+                                    <!--                                            >-->
+                                    <!--                                                {{ project.title }} (ID: {{ project.id }})-->
+                                    <!--                                            </option>-->
+                                    <!--                                        </select>-->
+                                    <!--                                    </div>-->
+
+                                    <!-- Дата начала -->
+                                    <div class="sm:col-span-1">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Дата начала</label>
+                                        <input
+                                            type="date"
+                                            v-model="form.start_date"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"
+                                        >
+                                    </div>
+
+                                    <!-- Дата окончания -->
+                                    <div class="sm:col-span-1">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Дата окончания</label>
+                                        <input
+                                            type="date"
+                                            v-model="form.due_date"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"
+                                        >
+                                    </div>
+                                </div>
 
                                 <!-- Название задачи -->
                                 <div>
@@ -108,7 +149,7 @@
                                     <input
                                         v-model="form.title"
                                         type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 text-sm sm:text-base"
                                         placeholder="Введите название задачи"
                                         required
                                     >
@@ -123,11 +164,13 @@
 
                                 <!-- Загрузка файлов -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Прикрепленные
-                                        файлы</label>
-                                    <div class="mt-1 flex items-center">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Прикрепленные файлы</label>
+                                    <div class="mt-1 flex flex-col sm:flex-row sm:items-center gap-2">
                                         <label
-                                            class="cursor-pointer bg-white rounded-md font-medium text-sky-500 hover:text-sky-600 focus-within:outline-none">
+                                            class="cursor-pointer bg-white rounded-md font-medium text-sky-500 hover:text-sky-600 focus-within:outline-none inline-flex items-center text-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                            </svg>
                                             <span>Выберите файлы</span>
                                             <input
                                                 type="file"
@@ -136,14 +179,14 @@
                                                 @change="handleFileUpload"
                                             >
                                         </label>
-                                        <span class="ml-2 text-sm text-gray-500">или перетащите файлы сюда</span>
+                                        <span class="text-xs sm:text-sm text-gray-500">или перетащите файлы сюда</span>
                                     </div>
 
                                     <!-- Предпросмотр загруженных файлов -->
                                     <div v-if="form.files.length > 0" class="mt-4 space-y-2">
                                         <div v-for="(file, index) in form.files" :key="index"
                                              class="flex items-center justify-between p-2 border border-gray-200 rounded-md">
-                                            <div class="flex items-center">
+                                            <div class="flex items-center min-w-0">
                                                 <template v-if="isImage(file)">
                                                     <img :src="filePreview(file)"
                                                          class="h-10 w-10 object-cover rounded mr-2" alt="Preview">
@@ -161,15 +204,13 @@
                                                         </svg>
                                                     </div>
                                                 </template>
-                                                <span class="text-sm text-gray-700 truncate max-w-xs">{{
-                                                        file.name
-                                                    }}</span>
+                                                <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
                                             </div>
 
                                             <button
                                                 type="button"
                                                 @click="removeFile(index)"
-                                                class="text-red-500 hover:text-red-700"
+                                                class="text-red-500 hover:text-red-700 ml-2"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                      viewBox="0 0 20 20"
@@ -187,7 +228,7 @@
                                 <div class="pt-2">
                                     <button
                                         type="submit"
-                                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors"
+                                        class="w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent rounded-md shadow-sm text-sm sm:text-base font-medium text-white bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors"
                                         :disabled="isSubmitting"
                                     >
                                         <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -240,6 +281,8 @@ export default {
                 title: '',
                 description: '',
                 contractor_id: '',
+                start_date: '',
+                due_date: '',
                 files: []
             }
         }
@@ -271,13 +314,14 @@ export default {
     methods: {
         store() {
             this.isSubmitting = true;
-
             const formData = new FormData();
             formData.append('project_id', this.form.project_id);
             formData.append('priority_id', this.form.priority_id);
             formData.append('title', this.form.title);
             formData.append('description', this.form.description);
             formData.append('contractor_id', this.form.contractor_id);
+            formData.append('start_date', this.form.start_date);
+            formData.append('due_date', this.form.due_date);
 
             this.form.files.forEach((file, index) => {
                 formData.append(`files[${index}]`, file);

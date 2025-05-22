@@ -26,7 +26,10 @@ class StoreRequest extends FormRequest
             'description' => 'required|string',
             'project_id' => 'required|integer:projects,id',
             'priority_id' => 'nullable|integer|exists:task_priorities,id',
-            'contractor_id' => 'nullable|integer'
+            'contractor_id' => 'nullable|integer',
+
+            'start_date' => 'nullable|date',
+            'due_date' => 'nullable|date',
         ];
     }
 }

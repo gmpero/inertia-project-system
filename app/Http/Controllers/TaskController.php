@@ -46,7 +46,6 @@ class TaskController extends Controller
                 ['creator_id' => auth()->id()]
             )
         );
-
         if ($request->hasFile('files')) {
             $task->storeFiles($request->file('files'));
         }

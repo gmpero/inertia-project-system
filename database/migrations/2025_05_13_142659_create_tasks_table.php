@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('priority_id')->nullable();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('contractor_id')->nullable();
+            $table->text('files')->nullable()->comment('JSON массив с информацией о файлах');
+            $table->date('start_date')->nullable();
+            $table->date('due_date')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

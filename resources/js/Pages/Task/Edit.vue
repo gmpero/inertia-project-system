@@ -34,7 +34,9 @@
                                             required
                                         >
                                             <option :value="project_id" selected>
-                                                {{ projects.find(p => p.id === project_id)?.title || 'Неизвестный проект' }}
+                                                {{
+                                                    projects.find(p => p.id === project_id)?.title || 'Неизвестный проект'
+                                                }}
                                             </option>
                                         </select>
                                     </div>
@@ -95,6 +97,30 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="flex space-x-4">
+                                    <!-- Дата начала -->
+                                    <div class="w-1/3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Дата начала</label>
+                                        <input
+                                            type="date"
+                                            v-model="start_date"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                        >
+                                    </div>
+
+                                    <!-- Дата окончания -->
+                                    <div class="w-1/3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Дата
+                                            окончания</label>
+                                        <input
+                                            type="date"
+                                            v-model="due_date"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
+                                        >
+                                    </div>
+                                    <div class="w-1/3"></div>
+                                </div>
+
                                 <!-- Название задачи -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Название задачи</label>
@@ -124,21 +150,33 @@
                                              class="flex items-center justify-between p-2 border border-gray-200 rounded-md">
                                             <div class="flex items-center truncate">
                                                 <template v-if="file.mime.startsWith('image/')">
-                                                    <img :src="file.url" class="h-8 w-8 object-cover rounded mr-2" alt="Preview">
+                                                    <img :src="file.url" class="h-8 w-8 object-cover rounded mr-2"
+                                                         alt="Preview">
                                                 </template>
                                                 <template v-else>
-                                                    <div class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                    <div
+                                                        class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             class="h-5 w-5 text-gray-400" fill="none"
+                                                             viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                  stroke-width="2"
+                                                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                                         </svg>
                                                     </div>
                                                 </template>
                                                 <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
-                                                <span class="text-xs text-gray-500 ml-2">{{ formatFileSize(file.size) }}</span>
+                                                <span class="text-xs text-gray-500 ml-2">{{
+                                                        formatFileSize(file.size)
+                                                    }}</span>
                                             </div>
-                                            <button type="button" @click="removeExistingFile(index)" class="text-red-500 hover:text-red-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            <button type="button" @click="removeExistingFile(index)"
+                                                    class="text-red-500 hover:text-red-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                     viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                          clip-rule="evenodd"/>
                                                 </svg>
                                             </button>
                                         </div>
@@ -146,9 +184,13 @@
 
                                     <!-- Добавление новых файлов -->
                                     <div class="mt-2">
-                                        <label class="cursor-pointer inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                        <label
+                                            class="cursor-pointer inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2"
+                                                 viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                                      clip-rule="evenodd"/>
                                             </svg>
                                             Добавить файлы
                                             <input type="file" class="sr-only" multiple @change="handleFileUpload">
@@ -161,21 +203,33 @@
                                              class="flex items-center justify-between p-2 border border-gray-200 rounded-md">
                                             <div class="flex items-center truncate">
                                                 <template v-if="isImage(file)">
-                                                    <img :src="filePreview(file)" class="h-8 w-8 object-cover rounded mr-2" alt="Preview">
+                                                    <img :src="filePreview(file)"
+                                                         class="h-8 w-8 object-cover rounded mr-2" alt="Preview">
                                                 </template>
                                                 <template v-else>
-                                                    <div class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                    <div
+                                                        class="h-8 w-8 bg-gray-100 rounded mr-2 flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             class="h-5 w-5 text-gray-400" fill="none"
+                                                             viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                  stroke-width="2"
+                                                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                                         </svg>
                                                     </div>
                                                 </template>
                                                 <span class="text-sm text-gray-700 truncate">{{ file.name }}</span>
-                                                <span class="text-xs text-gray-500 ml-2">{{ formatFileSize(file.size) }}</span>
+                                                <span class="text-xs text-gray-500 ml-2">{{
+                                                        formatFileSize(file.size)
+                                                    }}</span>
                                             </div>
-                                            <button type="button" @click="removeNewFile(index)" class="text-red-500 hover:text-red-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            <button type="button" @click="removeNewFile(index)"
+                                                    class="text-red-500 hover:text-red-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                     viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                          clip-rule="evenodd"/>
                                                 </svg>
                                             </button>
                                         </div>
@@ -207,7 +261,7 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 export default {
@@ -251,6 +305,8 @@ export default {
             project_id: this.task.project_id,
             priority_id: this.task.priority_id,
             contractor_id: this.task.contractor_id,
+            start_date: this.task.start_date,
+            due_date: this.task.due_date,
             quill: null,
 
             existingFiles: prepareFiles(this.task.files),
@@ -311,6 +367,8 @@ export default {
                 formData.append('project_id', this.project_id);
                 formData.append('priority_id', this.priority_id);
                 formData.append('contractor_id', this.contractor_id);
+                formData.append('start_date', this.start_date);
+                formData.append('due_date', this.due_date);
 
                 // Файлы для удаления
                 this.filesToDelete.forEach((fileId, index) => {

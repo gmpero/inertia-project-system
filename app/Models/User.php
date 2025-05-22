@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Project::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin'; // Или ваша логика определения админа
+    }
 }

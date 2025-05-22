@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('title');
             $table->text('description');
+            $table->string('color', 7)->default('#3b82f6');
             $table->timestamps();
         });
     }
