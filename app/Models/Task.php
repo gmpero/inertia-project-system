@@ -47,6 +47,11 @@ class Task extends Model
         $this->save();
     }
 
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

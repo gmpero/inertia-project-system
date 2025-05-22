@@ -27,6 +27,7 @@ class TaskResource extends JsonResource
             'creator' => $this->whenLoaded('creator'),
             'contractor' => $this->whenLoaded('contractor'),
             'priority' => $this->whenLoaded('priority'),
+            'status' => $this->whenLoaded('status'),
             'messages' => $this->whenLoaded('messages'),
             'files' => $this->when($this->files, function() {
                 return array_map(function($file) {

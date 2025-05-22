@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             TaskPrioritySeeder::class,
+            StatusSeeder::class,
             // Другие сидеры...
         ]);
         // \App\Models\User::factory(10)->create();

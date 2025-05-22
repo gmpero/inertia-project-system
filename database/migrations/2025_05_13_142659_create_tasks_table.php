@@ -24,6 +24,8 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('due_date')->nullable();
 
+            $table->unsignedBigInteger('status_id')->default(1);
+
             $table->softDeletes();
             $table->timestamps();
 
@@ -31,6 +33,8 @@ return new class extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('contractor_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
         });
     }
 

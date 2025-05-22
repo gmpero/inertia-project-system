@@ -98,6 +98,29 @@
                                     </div>
                                 </div>
                                 <div class="flex space-x-4">
+                                    <!-- Статус -->
+                                    <div class="w-1/3">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
+                                        <div class="relative">
+                                            <select
+                                                v-model="status_id"
+                                                class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 appearance-none"
+                                            >
+                                                <option v-for="status in statuses"
+                                                        :value="status.id"
+                                                        :key="status.id"
+                                                        :style="{ color: status.color }">
+                                                    {{ status.name }}
+                                                </option>
+                                            </select>
+                                            <!-- Цветной индикатор -->
+                                            <div
+                                                v-if="status_id"
+                                                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-sm"
+                                                :style="{ backgroundColor: statuses.find(s => s.id === status_id)?.color || 'transparent' }"
+                                            ></div>
+                                        </div>
+                                    </div>
                                     <!-- Дата начала -->
                                     <div class="w-1/3">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Дата начала</label>
@@ -118,7 +141,6 @@
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
                                         >
                                     </div>
-                                    <div class="w-1/3"></div>
                                 </div>
 
                                 <!-- Название задачи -->
@@ -281,6 +303,7 @@ export default {
         projects: Array,
         priorities: Array,
         users: Array,
+        statuses: Array,
     },
     data() {
         // Получаем базовый URL из window.location
@@ -307,6 +330,7 @@ export default {
             contractor_id: this.task.contractor_id,
             start_date: this.task.start_date,
             due_date: this.task.due_date,
+            status_id: this.task.status_id,
             quill: null,
 
             existingFiles: prepareFiles(this.task.files),
@@ -369,6 +393,7 @@ export default {
                 formData.append('contractor_id', this.contractor_id);
                 formData.append('start_date', this.start_date);
                 formData.append('due_date', this.due_date);
+                formData.append('status_id', this.status_id);
 
                 // Файлы для удаления
                 this.filesToDelete.forEach((fileId, index) => {

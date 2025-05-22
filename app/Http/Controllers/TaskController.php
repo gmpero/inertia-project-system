@@ -7,6 +7,7 @@ use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\Task\TaskResource;
 use App\Jobs\SendTaskNotification;
 use App\Models\Project;
+use App\Models\Status;
 use App\Models\Task;
 use App\Models\TaskPriority;
 use Illuminate\Support\Facades\Storage;
@@ -59,7 +60,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task->load('creator', 'messages.user', 'priority', 'contractor');
+        $task->load('creator', 'messages.user', 'priority', 'contractor', 'status');
         $task = TaskResource::make($task)->resolve();
 
         return inertia('Task/Show', compact('task'));
@@ -71,10 +72,12 @@ class TaskController extends Controller
     {
         $projects = Project::with('users:id,name')->select('id', 'title')->get();
         $priorities = TaskPriority::select('id', 'name', 'color')->get();
+        $statuses = Status::orderBy('order')->get();
         return inertia('Task/Edit', [
             'task' => $task,
             'projects' => $projects,
             'priorities' => $priorities,
+            'statuses' => $statuses,
         ]);
     }
 

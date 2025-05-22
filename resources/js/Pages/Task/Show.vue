@@ -28,6 +28,14 @@
                                     <span class="text-xs sm:text-sm font-medium">{{ task.priority?.name || 'Без приоритета' }}</span>
                                 </div>
 
+                                <!-- Статус -->
+                                <span class="text-gray-500 text-xs sm:text-sm sm:text-right flex items-center justify-end h-6">Статус:</span>
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 sm:w-6 sm:h-6 rounded mr-1 sm:mr-2"
+                                         :style="{ backgroundColor: task.status?.color || '#ccc' }"></div>
+                                    <span class="text-xs sm:text-sm font-medium">{{ task.status?.name || 'Без статуса' }}</span>
+                                </div>
+
                                 <!-- Исполнитель -->
                                 <span class="text-gray-500 text-xs sm:text-sm sm:text-right">Исполнитель:</span>
                                 <span class="text-xs sm:text-sm font-medium truncate">{{ task.contractor?.name ?? 'Не назначен' }}</span>

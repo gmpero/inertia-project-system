@@ -30,6 +30,8 @@ class UpdateRequest extends FormRequest
 
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date',
+
+            'status_id' => 'required|exists:statuses,id',
         ];
     }
 }
