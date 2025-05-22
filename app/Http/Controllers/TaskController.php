@@ -19,13 +19,18 @@ class TaskController extends Controller
         $user = auth()->user();
 
         $tasks = $user->hasRole('admin')
-            ? Task::with(['project', 'creator', 'priority', 'contractor'])->get()
+            ? Task::with(['project', 'creator', 'priority', 'contractor', 'status'])->get()
             : Task::whereIn('project_id', $user->projects()->pluck('projects.id'))
-                ->with(['project', 'creator', 'priority', 'contractor'])
+                ->with(['project', 'creator', 'priority', 'contractor', 'status'])
                 ->get();
 
         return inertia('Task/Index', [
-            'tasks' => TaskResource::collection($tasks)->resolve()
+            'tasks' => TaskResource::collection($tasks)->resolve(),
+            'auth' => [
+                'user' => [
+                    'id' => $user->id,
+                ]
+            ]
         ]);
     }
 
@@ -65,7 +70,6 @@ class TaskController extends Controller
 
         return inertia('Task/Show', compact('task'));
     }
-
 
 
     public function edit(Task $task)

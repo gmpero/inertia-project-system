@@ -83,14 +83,14 @@ export default {
                 return {domNodes: [container]};
             },
             eventClick: (info) => {
-                // Ваш существующий код
+                // действие при клике
             }
         });
         calendar.render();
     },
     methods: {
         showEventDetails(details) {
-            // Ваш существующий код
+            // ...
         }
     }
 }

@@ -16,6 +16,6 @@ class StatusSeeder extends Seeder
         Status::create(['name' => 'Новая', 'color' => '#3b82f6', 'is_default' => true]);
         Status::create(['name' => 'В работе', 'color' => '#f59e0b']);
         Status::create(['name' => 'На проверке', 'color' => '#8b5cf6']);
-        Status::create(['name' => 'Завершена', 'color' => '#10b981']);
+        Status::create(['name' => 'Готово', 'color' => '#10b981']);
     }
 }
