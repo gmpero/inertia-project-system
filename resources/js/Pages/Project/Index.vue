@@ -11,7 +11,7 @@
                 </Link>
             </div>
         </template>
-        <div class="py-12">
+        <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div v-if="projects" class="flex flex-col">
                     <div class="mt-4" v-for="project in projects" :key="project.id">

@@ -112,6 +112,11 @@ export default {
         MessageList,
         AuthenticatedLayout,
     },
+    computed: {
+        rawDescription() {
+            return { __html: this.task.description || '' };
+        }
+    },
     methods: {
         formatFileSize(bytes) {
             if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + ' GB';

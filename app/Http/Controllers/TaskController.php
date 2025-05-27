@@ -29,6 +29,7 @@ class TaskController extends Controller
             'auth' => [
                 'user' => [
                     'id' => $user->id,
+                    'name' => $user->name,
                 ]
             ]
         ]);

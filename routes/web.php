@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -45,7 +46,10 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get('/', [\App\Http\Controllers\ProjectController::class, 'index'])->name('project.index');
+        Route::get('/{project}/report', [ReportController::class, 'generateReport'])
+            ->name('project.report');
         Route::get('/{project}', [\App\Http\Controllers\ProjectController::class, 'show'])->name('project.show');
+
 
         // Права на редактирование
         Route::middleware(['can:edit projects'])->group(function () {

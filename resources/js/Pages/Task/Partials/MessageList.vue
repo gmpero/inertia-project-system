@@ -114,6 +114,7 @@ export default {
     },
 
     methods: {
+
         formatDateTime(dateString) {
             const date = new Date(dateString);
             return date.toLocaleString('ru-RU', {
@@ -126,6 +127,7 @@ export default {
         },
 
         openEditModal(message) {
+            console.log('Original HTML:', message.message);
             this.editingMessage = {
                 id: message.id,
                 content: message.message
@@ -159,6 +161,8 @@ export default {
                 this.quillInstance.on('text-change', () => {
                     this.editingMessage.content = this.quillInstance.root.innerHTML;
                 });
+
+                console.log('After Quill init:', this.quillInstance.root.innerHTML);
             });
         },
 
@@ -223,6 +227,7 @@ export default {
         }
     }
 }
+
 </script>
 
 <style>
