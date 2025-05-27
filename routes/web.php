@@ -46,10 +46,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get('/', [\App\Http\Controllers\ProjectController::class, 'index'])->name('project.index');
+        Route::get('/{project}', [\App\Http\Controllers\ProjectController::class, 'show'])->name('project.show');
         Route::get('/{project}/report', [ReportController::class, 'generateReport'])
             ->name('project.report');
-        Route::get('/{project}', [\App\Http\Controllers\ProjectController::class, 'show'])->name('project.show');
-
 
         // Права на редактирование
         Route::middleware(['can:edit projects'])->group(function () {
@@ -71,7 +70,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{task}/edit', [\App\Http\Controllers\TaskController::class, 'edit'])->name('task.edit');
         Route::patch('/{task}', [\App\Http\Controllers\TaskController::class, 'update'])->name('task.update');
         Route::delete('/{task}', [\App\Http\Controllers\TaskController::class, 'delete'])->name('task.delete');
+        Route::post('/{task}/time-entries', [\App\Http\Controllers\TimeEntryController::class, 'store'])
+            ->name('tasks.time-entries.store');
+        Route::get('/tasks/{task}/report', [\App\Http\Controllers\TimeEntryController::class, 'report'])
+            ->name('tasks.report');
     });
+
+//    Route::group(['namespace' => 'TimeEntries', 'prefix' => 'time_entries'], function () {
+//
+//    });
 
     Route::group(['namespace' => 'Message'], function () {
         Route::post('/', [\App\Http\Controllers\MessageController::class, 'store'])->name('message.store');

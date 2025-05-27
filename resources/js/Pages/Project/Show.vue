@@ -39,7 +39,7 @@
                         <div class="flex justify-end">
                             <Link
                                 :href="route('project.report', { project: project.id })"
-                                class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm"
+                                class="hover:bg-white hover:text-sky-500 py-3 w-48 border border-sky-500 bg-sky-500 rounded-full text-center text-white text-sm"
                             >
                                 Сформировать отчет
                             </Link>
